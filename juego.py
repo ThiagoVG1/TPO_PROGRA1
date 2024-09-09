@@ -30,6 +30,17 @@ def comprobar_victoria(tablero, ficha):
 
     return False
 
+
+def es_movimiento_valido(tablero, columna):
+    # Verifica si una columna no está llena.
+    return tablero[0][columna] == ' '
+
+def siguiente_fila_disponible(tablero, columna):
+    # Encuentra la siguiente fila disponible en la columna especificada.
+    for fila in range(FILAS - 1, -1, -1):
+        if tablero[fila][columna] == ' ':
+            return fila
+
 def main():
     tablero=crear_tablero()
     juego_terminado = False
@@ -39,14 +50,12 @@ def main():
         jugador = turno % 2 + 1
         ficha = 'X' if jugador == 1 else 'O'
         # Pide al jugador que elija una columna
-        columna = int(input(f"Jugador {jugador} ({ficha}), elige una columna (0-{COLUMNAS-1}): "))
+        columna = int(input(f"Jugador  ({ficha}), elige una columna (0-{COLUMNAS-1}): "))
         # Comprueba si la columna esta llena
-        if tablero[0][columna] == ' ':
-            fila = FILAS - 1
-            while tablero[fila][columna] != ' ':
-                fila -= 1
-            # Hace el movimiento
+        if es_movimiento_valido(tablero, columna):
+            fila = siguiente_fila_disponible(tablero, columna)
             hacer_movimiento(tablero, fila, columna, ficha)
+            
             # Verifica si el jugador ha ganado
             if comprobar_victoria(tablero, ficha):
                 imprimir_tablero(tablero)
