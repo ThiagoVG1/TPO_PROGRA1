@@ -1,5 +1,3 @@
-# src/validar.py
-
 from src.tablero import COLUMNAS
 
 def obtener_columna_valida():

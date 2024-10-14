@@ -1,5 +1,3 @@
-# src/tablero.py
-
 FILAS = 6
 COLUMNAS = 7
 
@@ -9,6 +7,7 @@ def crear_tablero():
 
 def imprimir_tablero(tablero):
     #Imprime el tablero de juego.
+
     for fila in tablero:
         print('|' + '|'.join(fila) + '|')
     print(' ' + ' '.join([str(i) for i in range(COLUMNAS)]))
@@ -55,3 +54,10 @@ def comprobar_victoria(tablero, ficha):
                 return True
 
     return False
+
+def tablero_lleno(tablero):
+    #Verifica si el tablero está lleno.
+    for col in range(COLUMNAS):
+        if tablero[0][col] == ' ':
+            return False
+    return True
