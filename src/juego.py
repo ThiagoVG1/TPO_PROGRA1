@@ -1,21 +1,36 @@
 from src.tablero import crear_tablero, imprimir_tablero, hacer_movimiento, comprobar_victoria, tablero_lleno
 from src.validar import obtener_columna_valida
 from src.jugador import Jugador
+from src.jugadas import sugerir_jugada
 
 def es_movimiento_valido(tablero, columna):
-    #Verifica si una columna no esta llena.
+    # Verifica si una columna no está llena.
     return tablero[0][columna] == ' '
 
 def siguiente_fila_disponible(tablero, columna):
-    #Encuentra la siguiente fila disponible en la columna especificada.
+    # Encuentra la siguiente fila disponible en una columna especificada.
     for fila in range(len(tablero) - 1, -1, -1):
         if tablero[fila][columna] == ' ':
             return fila
     return None  # Si la columna está llena
 
-def iniciar_juego():
-    #Función principal que ejecuta el juego
+def preguntar_jugar_de_nuevo():
+    # Pregunta al usuario si quiere jugar de nuevo y valida la respuesta.
     while True:
+        respuesta = input("¿Quieres jugar de nuevo? (s/n): ").strip().lower()
+        if respuesta == 's':
+            print("\n--- Nueva Partida ---\n")
+            return True  # Indica que el jugador quiere otra partida
+        elif respuesta == 'n':
+            print("¡Gracias por jugar!")
+            return False  # Indica que el jugador no quiere jugar de nuevo
+        else:
+            print("Error. Por favor, ingresa 's' para si o 'n' para no.")
+
+def iniciar_juego():
+    # Función principal que ejecuta el juego.
+    jugar = True
+    while jugar:
         tablero = crear_tablero()
         juego_terminado = False
         turno = 0
@@ -24,11 +39,15 @@ def iniciar_juego():
         jugador1 = Jugador("Jugador 1", 'X')
         jugador2 = Jugador("Jugador 2", 'O')
         jugadores = [jugador1, jugador2]
-
+        
         while not juego_terminado:
             imprimir_tablero(tablero)
             jugador_actual = jugadores[turno % 2]
-            print(f"Turno de {jugador_actual}")
+            print(f"Turno de {jugador_actual.nombre} ({jugador_actual.ficha})")
+
+            # Obtener sugerencia de jugada
+            sugerencia = sugerir_jugada(tablero, jugador_actual.ficha)
+            print(f"Sugerencia de jugada para {jugador_actual.nombre}: Columna {sugerencia}")
 
             # Obtener una columna válida
             columna = obtener_columna_valida()
@@ -58,9 +77,6 @@ def iniciar_juego():
                 juego_terminado = True
 
         # Preguntar si quieren jugar de nuevo
-        jugar_de_nuevo = input("Queres jugar de nuevo? (s/n): ").lower()
-        if jugar_de_nuevo != 's':
-            print("¡Gracias por jugar!")
-            break
-        else:
-            print("\n--- Nueva Partida ---\n")
+        jugar = preguntar_jugar_de_nuevo()
+
+

@@ -1,7 +1,7 @@
 from src.tablero import COLUMNAS
 
 def obtener_columna_valida():
- #Solicita una columna valida al jugador, verificando que sea un numero dentro del rango.
+ # Solicita una columna valida al jugador, verificando que sea un numero dentro del rango.
     while True:
         try:
             columna = int(input(f"Elige una columna (0-{COLUMNAS-1}): "))
