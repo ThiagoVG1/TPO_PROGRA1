@@ -35,5 +35,36 @@ class TestTablero(unittest.TestCase):
         # Verificamos que detecta el tablero lleno
         self.assertTrue(tablero_lleno(tablero))
 
+    class TestJugador(unittest.TestCase):
+
+    def test_jugador_init(self):
+        jugador = Jugador("Jugador 1", 'X')
+        # Verificamos la inicialización correcta del jugador
+        self.assertEqual(jugador.nombre, "Jugador 1")
+        self.assertEqual(jugador.ficha, 'X')
+
+
+class TestEstrategias(unittest.TestCase):
+
+    def test_es_jugada_ganadora_horizontal(self):
+        tablero = crear_tablero()
+        fila, columna = 5, 0
+        for col in range(columna, columna + 4):
+            hacer_movimiento(tablero, fila, col, 'X')
+        # Verificamos que detecta una jugada ganadora horizontal
+        self.assertTrue(es_jugada_ganadora(tablero, fila, columna, 'X'))
+
+    def test_obtener_jugadas_validas(self):
+        tablero = crear_tablero()
+        # Todas las columnas deben estar disponibles inicialmente
+        jugadas_validas = obtener_jugadas_validas(tablero)
+        self.assertEqual(jugadas_validas, list(range(7)))
+
+    def test_sugerir_jugada(self):
+        tablero = crear_tablero()
+        # En un tablero vacío, sugerir_jugada debería devolver una jugada válida
+        jugada = sugerir_jugada(tablero, 'X')
+        self.assertIn(jugada, obtener_jugadas_validas(tablero))
+
 if __name__ == '__main__':
     unittest.main()
