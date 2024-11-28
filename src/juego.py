@@ -1,7 +1,8 @@
-from src.tablero import crear_tablero, imprimir_tablero, hacer_movimiento, comprobar_victoria, tablero_lleno
+from src.tablero import crear_tablero, imprimir_tablero, hacer_movimiento, comprobar_victoria, tablero_lleno,color_ficha
 from src.validar import obtener_columna_valida
 from src.jugador import Jugador
 from src.jugadas import sugerir_jugada
+from colorama import Fore, Style  
 
 def es_movimiento_valido(tablero, columna):
     # Verifica si una columna no está llena.
@@ -25,7 +26,7 @@ def preguntar_jugar_de_nuevo():
             print("¡Gracias por jugar!")
             return False  # Indica que el jugador no quiere jugar de nuevo
         else:
-            print("Error. Por favor, ingresa 's' para si o 'n' para no.")
+            print("Error. Por favor, ingresa 's' para sí o 'n' para no.")
 
 def iniciar_juego():
     # Función principal que ejecuta el juego.
@@ -43,11 +44,14 @@ def iniciar_juego():
         while not juego_terminado:
             imprimir_tablero(tablero)
             jugador_actual = jugadores[turno % 2]
-            print(f"Turno de {jugador_actual.nombre} ({jugador_actual.ficha})")
+            
+            # Mostrar el turno con el color de la ficha
+            ficha_coloreada = color_ficha(jugador_actual.ficha)
+            print(f"Turno de {ficha_coloreada} {jugador_actual.nombre}{Style.RESET_ALL}")
 
             # Obtener sugerencia de jugada
             sugerencia = sugerir_jugada(tablero, jugador_actual.ficha)
-            print(f"Sugerencia de jugada para {jugador_actual.nombre}: Columna {sugerencia}")
+            print(f"Sugerencia de jugada para {Fore.YELLOW}{jugador_actual.nombre}{Style.RESET_ALL}: Columna {sugerencia}")
 
             # Obtener una columna válida
             columna = obtener_columna_valida()
@@ -61,7 +65,11 @@ def iniciar_juego():
                     # Verifica si el jugador ha ganado
                     if comprobar_victoria(tablero, jugador_actual.ficha):
                         imprimir_tablero(tablero)
-                        print(f"¡{jugador_actual.nombre} ({jugador_actual.ficha}) ha ganado!")
+                        jugador_perdedor = jugadores[(turno + 1) % 2]  # Determinar el perdedor
+                        print(
+                            f"¡{Fore.GREEN}{jugador_actual.nombre} ({jugador_actual.ficha}) ha ganado!{Style.RESET_ALL} "
+                            f"{Fore.RED}({jugador_perdedor.nombre} pierde){Style.RESET_ALL}"
+                        )
                         juego_terminado = True
                     else:
                         turno += 1
@@ -78,5 +86,3 @@ def iniciar_juego():
 
         # Preguntar si quieren jugar de nuevo
         jugar = preguntar_jugar_de_nuevo()
-
-

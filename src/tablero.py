@@ -1,4 +1,4 @@
-from colorama import init, Fore,Style
+from colorama import init, Fore, Style
 
 init(autoreset=True)
 
@@ -10,16 +10,15 @@ def crear_tablero():
     return [[' ' for _ in range(COLUMNAS)] for _ in range(FILAS)]
 
 def color_ficha(ficha):
-    if ficha=='X':
-        return Fore.RED + 'X'
-    elif ficha=='O':
-        return Fore.GREEN + 'O'
+    if ficha == 'X':
+        return Fore.BLUE + 'X' + Style.RESET_ALL
+    elif ficha == 'O':
+        return Fore.MAGENTA + 'O' + Style.RESET_ALL
     else:
-        return Fore.WHITE + ' '
-    
+        return ' '  # No color para celdas vacías.
 
 def imprimir_tablero(tablero):
-# Imprime el tablero de juego.
+    # Imprime el tablero de juego.
     for fila in tablero:
         print('|' + '|'.join([color_ficha(c) for c in fila]) + '|')
     print(' ' + ' '.join([str(i) for i in range(COLUMNAS)]))
@@ -29,7 +28,7 @@ def hacer_movimiento(tablero, fila, columna, ficha):
     tablero[fila][columna] = ficha
 
 def comprobar_victoria(tablero, ficha):
-    # Comprobar victoria horizontal (--)
+    # Comprobar victoria horizontal (--).
     for fila in range(FILAS):
         for col in range(COLUMNAS - 3):
             if (tablero[fila][col] == ficha and
@@ -38,7 +37,7 @@ def comprobar_victoria(tablero, ficha):
                 tablero[fila][col + 3] == ficha):
                 return True
 
-    # Comprobar victoria vertical (|)
+    # Comprobar victoria vertical (|).
     for fila in range(FILAS - 3):
         for col in range(COLUMNAS):
             if (tablero[fila][col] == ficha and
@@ -47,7 +46,7 @@ def comprobar_victoria(tablero, ficha):
                 tablero[fila + 3][col] == ficha):
                 return True
 
-    # Comprobar victoria diagonal ascendente (\)
+    # Comprobar victoria diagonal ascendente (\).
     for fila in range(FILAS - 3):
         for col in range(COLUMNAS - 3):
             if (tablero[fila][col] == ficha and
@@ -56,7 +55,7 @@ def comprobar_victoria(tablero, ficha):
                 tablero[fila + 3][col + 3] == ficha):
                 return True
 
-    # Comprobar victoria diagonal descendente (/)
+    # Comprobar victoria diagonal descendente (/).
     for fila in range(3, FILAS):
         for col in range(COLUMNAS - 3):
             if (tablero[fila][col] == ficha and
