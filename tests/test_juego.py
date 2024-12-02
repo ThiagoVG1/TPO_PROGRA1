@@ -35,7 +35,7 @@ class TestTablero(unittest.TestCase):
         # Verificamos que detecta el tablero lleno
         self.assertTrue(tablero_lleno(tablero))
 
-    class TestJugador(unittest.TestCase):
+class TestJugador(unittest.TestCase):
 
     def test_jugador_init(self):
         jugador = Jugador("Jugador 1", 'X')
